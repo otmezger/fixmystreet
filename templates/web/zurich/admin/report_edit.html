@@ -114,30 +114,6 @@
 
 [% status_message %]
 
-<p class="report-edit-action">
-    <label for="new_internal_note">[% loc('New internal note:') %]</label>
-    <textarea name='new_internal_note' id='new_internal_note' cols=60 rows=4>[% new_internal_note | html %]</textarea>
-</p>
-
-<p class="report-edit-action">
-<label class="admin-label--inline" for="time_spent">[% loc('Time spent (in minutes):') %]</label>
-<input type="text" name="time_spent" id="form_time_spent" style="width: 4em" value="0">
-<script>
-    $(function () {
-        $('#form_time_spent').spinner({
-            spin: function (e, ui) {
-                if (ui.value < 0) { return false }
-            }
-        });
-        setTimeout(function(){
-          $('.message-updated').slideUp(250, function(){
-            $(this).remove();
-          });
-        }, 5000);
-    });
-</script>
-</p>
-
 <p>
     <span class="mock-label">[% loc('State:') %]</span>
     <select name="state"  id="state">
@@ -147,56 +123,6 @@
     [% END %]
     </select>
 </p>
-
-<script type="text/javascript">
-$(function(){
-
-    $('.assignation__select').change(function(){
-        if (this.value == "") {
-            $('.assignation').css('color', '#000');
-        } else {
-            var a = $(this).closest('li').css('color', '#000');
-            $('.assignation select').not(this).val("");
-            $('.assignation').not(a).css('color', '#999');
-        }
-    });
-
-    $('#state').change(function(){
-        // Show or hide the automatic reply field
-        var state = $(this).val();
-
-        // show or disable assignation, templates, public_response, publish if
-        // same or different state to the one we started on
-        if ((state === '[% pstate %]')) {
-            $('input[name=publish_response]').show();
-            $('.response_templates_select').show();
-            $('#status_update_container').show();
-
-            if (state === 'confirmed') {
-                $('#assignation__category').show();
-                $('#assignation__subdivision').show();
-            }
-            if ((state === 'closed') || (state === 'investigating')) {
-                $('#assignation__external').show();
-            }
-        }
-        else {
-            $('input[name=publish_response]').hide();
-            $('.response_templates_select').hide();
-            $('#status_update_container').hide();
-
-            $('#assignation__category').hide();
-            $('#assignation__subdivision').hide();
-            $('#assignation__category select').val('');
-            $('#assignation__subdivision select').val('');
-
-            $('#assignation__external select').val('');
-            $('#assignation__external').hide();
-        }
-
-    }).change();
-});
-</script>
 
 [% IF problem.state == 'confirmed' %]
 <ul class="no-bullets">
@@ -231,27 +157,30 @@ $(function(){
 [%# 3rd party messages sent for Extern/Wunsch states %]
 [% FOR s IN ['closed','investigating'] %]
     [% IF pstate == s %]
-    <ul class="no-bullets">
-    <li class="assignation report-edit-action" id="assignation__external">
-    <label for="body_external">
-        [% IF pstate == 'closed' %]
+    <ul class="no-bullets assignation report-edit-action" id="assignation__external">
+    <li>
+        <label for="body_external">
+          [% IF pstate == 'closed' %]
             [% loc('Assign to external body:') %]
-        [% ELSE %]
+          [% ELSE %]
             [% loc('Assign to competent body:') %]
-        [% END %]
-    </label>
+          [% END %]
+        </label>
         <select name="body_external" id="body_external">
             <option value="">--</option>
-        [% FOR body IN bodies %]
+          [% FOR body IN bodies %]
             [% NEXT IF body.parent OR body.bodies OR body.deleted %]
             <option value="[% body.id %]"[% IF body.id == problem.external_body %] selected[% END %]>[% body.name %]</option>
-        [% END %]
+          [% END %]
         </select>
-        <br>
-        [% IF pstate == 'closed' %]
+    </li>
+    <li>
+      [% IF pstate == 'closed' %]
         <input type="checkbox" name="third_personal" id="third_personal" value="1"[% ' checked' IF problem.extra.third_personal %]>
         <label for="third_personal" class="inline">[% loc('Include reporter personal details') %]</label>
-        [% END %]
+      [% END %]
+    </li>
+    <li>
         [% INCLUDE 'admin/response_templates_select.html' for='external_body' %]
         <textarea name='external_message' id='external_body' cols=60 rows=5>[% problem.get_extra_metadata('external_message') %]</textarea>
     </li>
@@ -279,19 +208,29 @@ $(function(){
     </ul>
 [% END %]
 
+<p class="report-edit-action">
+    <label for="new_internal_note">[% loc('New internal note:') %]</label>
+    <textarea name='new_internal_note' id='new_internal_note' cols=60 rows=4>[% new_internal_note | html %]</textarea>
+</p>
+
+<p class="report-edit-action">
+    <label class="admin-label--inline" for="time_spent">[% loc('Time spent (in minutes):') %]</label>
+    <input type="text" name="time_spent" id="form_time_spent" style="width: 4em" value="0">
+</p>
+
 <p align="right" class="report-edit-action">
-[% IF show_publish_response %]
+  [% IF show_publish_response %]
     [%# While we call this 'publish_response', the response will not actually
       # be "published" for these cases: Wish / Hidden / Not contactable (for these,
       # only a private email will be sent to the user.  However, in all cases,
       # this is the end of processing, so we mark this with the same text used
       # for 'No further updates %]
-<input type="submit" name="publish_response" value="[% loc('No further updates') %]">
-[% END %]
+    <input type="submit" name="publish_response" value="[% loc('No further updates') %]">
+  [% END %]
 
     [%# This button simply saves changes, but does NOT close the report (though
       # it may trigger other workflow %]
-<input type="submit" name="Submit changes" value="[% loc('Submit changes') %]" >
+    <input type="submit" name="Submit changes" value="[% loc('Submit changes') %]" >
 </p>
 
 [% IF c.cobrand.problem_has_public_response(problem) %]
@@ -306,5 +245,71 @@ $(function(){
 </div>
 
 </form>
+
+<script type="text/javascript">
+$(function(){
+
+    $('#form_time_spent').spinner({
+        spin: function (e, ui) {
+            if (ui.value < 0) { return false }
+        }
+    });
+
+    setTimeout(function(){
+        $('.message-updated').slideUp(250, function(){
+            $(this).remove();
+        });
+    }, 5000);
+
+    $('.assignation__select').change(function(){
+        if (this.value == "") {
+            $('.assignation').css('color', '#000');
+        } else {
+            var a = $(this).closest('li').css('color', '#000');
+            $('.assignation select').not(this).val("");
+            $('.assignation').not(a).css('color', '#999');
+        }
+    });
+
+    $('#state').change(function(){
+        // Show or hide the automatic reply field
+        var state = $(this).val();
+
+        // show or disable assignation, templates, public_response, publish if
+        // same or different state to the one we started on
+        if ((state === '[% pstate %]')) {
+            $('input[name=publish_response]').show();
+            $('.response_templates_select').show();
+            $('#status_update_container').show();
+
+            if (state === 'confirmed') {
+                $('#assignation__category').show();
+                $('#assignation__subdivision').show();
+            }
+            if ((state === 'closed') || (state === 'investigating')) {
+                $('#assignation__external').show();
+            } else {
+                $('#assignation__external').hide();
+            }
+        }
+        else {
+            $('input[name=publish_response]').hide();
+            $('.response_templates_select').hide();
+            $('#status_update_container').hide();
+
+            $('#assignation__category').hide();
+            $('#assignation__subdivision').hide();
+            $('#assignation__category select').val('');
+            $('#assignation__subdivision select').val('');
+
+            $('#assignation__external select').val('');
+            $('#assignation__external').hide();
+            $('#external_body').hide();
+            $('#third_personal, label[for=third_personal]').hide();
+        }
+
+    }).change();
+});
+</script>
 
 [% INCLUDE 'admin/footer.html' %]
