@@ -134,6 +134,12 @@ body.fullwidthpage .container .content footer .tablewrapper {
   margin-bottom: 20px;
 }
 
+// Center the mobile app buttons
+#footer-mobileapps p,
+#footer-help p {
+  text-align: center;
+}
+
 //////////////////////////////////////////////////////////////////////////////
 // Bromley desktop styles
 //////////////////////////////////////////////////////////////////////////////
