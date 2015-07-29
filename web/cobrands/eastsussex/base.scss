@@ -120,6 +120,10 @@ h1.main {
 #front-main {
 
     margin: 0;
+    // Add some margin to the top of this so that the FMS menu doesn't overlap
+    // it, because we show a menu at the top on East Sussex as well as at the
+    // bottom.
+    margin-top: 5em;
     padding: 1em;
 
     #front-main-container {
