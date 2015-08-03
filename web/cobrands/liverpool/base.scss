@@ -1,0 +1,27 @@
+@import "../sass/h5bp";
+@import "./_colours";
+@import "../sass/mixins";
+@import "compass";
+
+$body-font: 'Open Sans', sans-serif, Helvetica, Arial, sans-serif;
+$meta-font: 'Open Sans', sans-serif, Helvetica, Arial, sans-serif;
+$heading-font: 'Open Sans', sans-serif, Helvetica, Arial, sans-serif;
+
+@import "../sass/base";
+
+#site-header {
+    background: white;
+}
+
+// Disable the FMS logo for now.
+// TODO - see if this is still needed once the layout is sorted RE: Navigation position.
+#site-logo {
+    background: none !important;
+    text-indent: 0;
+    font-size: 1.5em;
+    color: #522E91;
+}
+
+.liverpool-header, .liverpool-footer {
+    display: none;
+}

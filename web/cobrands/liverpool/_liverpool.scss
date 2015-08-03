@@ -1,0 +1,263 @@
+// Wrapped in this selector to ensure specificity.
+body.liverpool {
+
+    // Show header on larger layouts (this is hidden in base.css for mobiles).
+    .liverpool-header, .liverpool-footer {
+        display: block;
+    }
+
+    // Respect bootstrap's widths.
+    &.frontpage .content {
+        width: auto;
+    }
+
+    .content {
+        position: relative;
+        z-index: 10;
+    }
+
+    // Don't fix the nav.
+    &.mappage .nav-wrapper .nav-wrapper-2 {
+        position: absolute;
+        background: none;
+    }
+
+    // Remove squares from top navigation.
+    ul.nav li {
+        list-style: none;
+    }
+
+    // Fix input sizes to work with Bootstrap.
+    input[type=text], input[type=password], input[type=email], textarea {
+        -ms-box-sizing: content-box;
+        -o-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        -webkit-box-sizing: content-box;
+        box-sizing: content-box;
+    }
+
+    textarea {
+        width: 100%;
+    }
+
+    .sidebar-tips p, .sidebar-notes li {
+        line-height: initial;
+    }
+
+    // Make sure the navbar always takes up at least 80px to match main site.
+    .navbar {
+        min-height: 80px;
+    }
+
+    // Don't repeat the border, the liverpool header already has one.
+    .nav-wrapper .nav-wrapper-2 {
+        border: none;
+    }
+
+    // Position the main nav at the top of the screen.
+    #main-nav {
+        margin: 1em 0 0;
+        ul {
+            float: none;
+        }
+    }
+
+    @media only screen and (min-width: 48em) and (max-width: 61em) {
+        #main-nav {
+            float: none;
+            padding-left: 0;
+        }
+    }
+
+    #main-nav ul#main-menu li {
+        a {
+            color: #373b43;
+            background-color: #ededed;
+            padding: 0.75em;
+
+            &:hover {
+                background-color: #e3e3e3
+            }
+
+            // Don't style the report a problem button differently when it's a link.
+            &.report-a-problem-btn {
+                margin: 0;
+                padding: 0.75em;
+                -webkit-border-radius: 0;
+                -moz-border-radius: 0;
+                -ms-border-radius: 0;
+                -o-border-radius: 0;
+                border-radius: 0;
+            }
+        }
+
+        span {
+            padding: 0.75em;
+            color: #fff;
+            background-color: $primary;
+        }
+
+        body.mappage & span, body.mappage & a {
+            padding: 0.75em;
+        }
+
+    }
+
+    // Make the site-header respect the height it's given.
+    #site-header {
+        height: auto;
+    }
+
+    // Don't display the site logo because we're using Liverpool's header, which contains their logo.
+    #site-logo {
+        display: none !important;
+    }
+
+    // Make sure there is enough room for the navigation with the site-header hidden.
+    #front-main {
+        margin-top: 3em;
+    }
+
+    // Fix position of the user-meta div
+    #user-meta {
+        left: 0;
+        margin-left: 1em;
+        position: relative;
+        z-index: 5;
+
+        p {
+            top: 1em;
+            right: auto;
+            left: 0;
+            color: #fff;
+            background-color: $primary;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
+
+            a {
+                background: #444;
+                color: #fff;
+                &:hover {
+                    background: #444;
+                    color: #fff;
+                }
+            }
+        }
+    }
+
+    .shadow-wrap {
+        position: static;
+        padding-top: 0;
+        margin-bottom: 1em;
+    }
+
+    form.full-width {
+        margin: 0 0 20px;
+    }
+
+    // body.liverpool.mappage
+    &.mappage {
+        #map_box {
+            width: 25em;
+        }
+
+        .content {
+            width: 21em;
+        }
+
+        .full-width, .shadow-wrap {
+            width: 23em;
+        }
+
+        #report-a-problem-sidebar, .general-sidebar-notes {
+            left: 23em;
+        }
+        #forgotten-pw {
+            left: 22em;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        // body.liverpool.mappage
+        &.mappage {
+            #map_box {
+                width: 29em;
+            }
+
+            .content {
+                width: 27em;
+            }
+
+            .full-width, .shadow-wrap {
+                width: 29em;
+            }
+
+            #report-a-problem-sidebar, .general-sidebar-notes {
+                left: 29em;
+            }
+
+            #forgotten-pw {
+                left: 28em;
+            }
+        }
+
+    }
+
+    #front-main #postcodeForm div {
+        width: 16em;
+
+        input#pc {
+            font-size: 14px;
+        }
+    }
+
+    // Over-specific container widths to allow bootstrap to work.
+    //
+    // This is necessary because both Bootstrap and FMS use the .container class
+    // in different conflicting ways.
+    .container, .wrapper {
+        width: 940px;
+        margin: 0 auto;
+    }
+
+    @media (min-width: 768px) and (max-width: 979px) {
+        .container, .wrapper {
+            width: 724px;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .container, .wrapper {
+            width: 1170px;
+        }
+    }
+
+    // IE fixes
+    .ie8 & {
+        .content {
+            margin-top: 3em;
+        }
+    }
+
+    .ie6, .ie7 & {
+        #user-meta p {
+            top: -2em;
+            margin-left: 0;
+        }
+    }
+
+    .ie6, .ie7 &.mappage {
+        .container {
+            float: none;
+            width: auto;
+            margin-left: inherit;
+        }
+        .nav-wrapper{
+            z-index: auto;
+            .nav-wrapper-2 {
+                position: static;
+            }
+        }
+    }
+}
