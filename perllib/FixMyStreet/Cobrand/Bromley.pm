@@ -38,9 +38,17 @@ sub disambiguate_location {
         $town = ', BR6 0PL';
     }
     $town .= ', BR5' if $string =~ /^meadway/i;
+    $town .= ', BR5' if $string =~ /^mill\s+brook\s+r(?:oa)?d$/i;
+    $town .= ', BR5' if $string =~ /^kent\s+r(?:oa)?d$/i;
+    $town .= ', BR5' if $string =~ /^the\s+landway$/i;
+    $town .= ', BR5' if $string =~ /^mountfield\s+way$/i;
+    $town .= ', BR5 3' if $string =~ /^star\s+lane$/i;
+    $town .= ', BR5 4AX' if $string =~ /^high\s+st(reet)?(,)?\s+st\s+mary\s+cray$/i;
 
     # and BR6
     $town .= ', BR6' if $string =~ /^berrylands/i;
+    $town .= ', BR6' if $string =~ /^crofton\s+r(?:oa)?d$/i;
+    $town .= ', BR6' if $string =~ /^crofton\s+lane$/i;
 
     # White Horse Hill is on boundary with Greenwich, so need a
     # specific postcode
